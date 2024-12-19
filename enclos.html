@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoo Enclosures</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Nouveau lien CDN pour Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Animation et info-bulle */
+        .card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        * {
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+        }
+    </style>
+
+</head>
+
+<body class=" min-h-screen flex items-center flex flex-col justify-center  container mx-auto px-4 py-6"
+    style=" background: linear-gradient(rgba(2, 2, 2, 0.4), rgba(0, 0, 0, 0.4)),url('images/back4.jpg') no-repeat center center; background-size: cover;">
+
+
+    <!-- <body class="flex items-center justify-center min-h-screen p-4" style="background: url('URL_DE_TON_IMAGE') no-repeat center center; background-size: cover; backdrop-filter: brightness(0.9);"> -->
+
+
+    <header class="w-full p-4 fixed top-0 left-0 z-50">
+        <!-- Bouton Retour -->
+        <a href="index.html"
+            class="absolute top-4 left-4 flex items-center text-red-600 hover:text-red-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="ml-2 text-sm font-medium">Home</span>
+        </a>
+
+        <!-- Titre centré avec icône -->
+        <div class="flex flex-col items-center mb-4">
+            <!-- Titre avec icône -->
+            <div class="flex items-center gap-2 mt-8">
+                <i class="fas fa-paw text-white text-4xl"></i>
+                <h1 class="text-4xl font-bold text-white">List of enclosures</h1>
+            </div>
+
+            <!-- Barre de recherche avec espacement ajusté -->
+            <div class="flex items-center gap-2 mt-4">
+                <input type="text" id="searchId" placeholder="search an animal"
+                    class="w-48 px-3 py-1.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+                <button class="p-2 text-green-600 hover:text-green-700" id="buttonSearchId">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Liste des enclos sous le titre -->
+    <!-- <div class="p-6 flex flex-wrap items-center justify-center gap-1" id="card-container">
+    </div>
+     -->
+
+    <div class="p-6 flex flex-wrap items-center justify-center gap-6" id="card-container" style="max-width: 100%;">
+    </div>
+
+
+    <!-- Modal d'edit -->
+
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-md w-96">
+            <h2 class="text-lg font-semibold mb-4">Edit Form</h2>
+            <form id="editForm">
+                <!-- Champ caché pour stocker l'ID de l'enclos -->
+                <input type="hidden" id="enclosId">
+
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="name"
+                        class="border px-3 py-2 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        placeholder="Enter name" required>
+                </div>
+                <div class="mb-4">
+                    <label for="heuresD" class="block text-sm font-medium text-gray-700">Meal start Time</label>
+                    <input type="time" id="heuresD"
+                        class="border px-3 py-2 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="heuresF" class="block text-sm font-medium text-gray-700"> Meal End Time</label>
+                    <input type="time" id="heuresF"
+                        class="border px-3 py-2 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="statut" class="block text-sm font-medium text-gray-700">Statut</label>
+                    <input type="checkbox" id="statut" class="rounded-lg text-green-500">
+                </div>
+
+
+                <div class="flex justify-between gap-4">
+                    <button type="submit"
+                        class="w-1/2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 focus:outline-none">Save</button>
+                    <button type="button" id="closeModal"
+                        class="w-1/2 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 focus:outline-none">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </main>
+
+    <footer class="bg-green-800 text-white py-6 fixed bottom-0 left-0 w-full">
+        <div class="container mx-auto text-center">
+            <p class="text-xl text-lg">
+                &copy; 2024 <span class="font-bold">OASIS ZOO</span>. Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+
+
+    <!-- Modal d'edit -->
+
+
+    <!-- <script>
+        const apiUrl = "http://127.0.0.1:8000/enclos/enclos/by_biome";
+        const container = document.getElementById('card-container');
+    
+        const colors = ['border-blue-500', 'border-green-500', 'border-red-500', 'border-orange-500', 'border-black'];
+    
+        // Fonction pour créer une carte d'enclos
+        function createCard(name, statut, id) {
+            const statutText = statut ? "Ouvert" : "Fermé";
+            const statutColor = statut ? "text-green-500" : "text-red-500";
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    
+            // Retourne une structure de carte avec un ID unique pour chaque enclos
+            return `
+                <div 
+                    class="card w-60 h-30 border ${randomColor} rounded-lg shadow-md bg-white p-4 cursor-pointer"
+                    data-enclosure-id="${id}"
+
+                >
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-paw text-gray-700 text-xl"></i>
+                        <h2 class="text-lg font-semibold text-gray-800">${name}</h2>
+                    </div>
+                    <p class="text-sm font-medium ${statutColor}">${statutText}</p>
+                </div>
+            `;
+        }
+    
+        // Fonction pour rediriger vers la liste des animaux
+        function redirectToAnimals(enclosureId) {
+            window.location.href = `animals.html?enclosureId=${enclosureId}`;
+        }
+    
+        async function fetchData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const biomeId = urlParams.get('biomeId');
+    
+            if (!biomeId) {
+                container.innerHTML = '<p class="text-red-500 text-xl">Aucun biome sélectionné.</p>';
+                return;
+            }
+    
+            try {
+                const response = await fetch(`${apiUrl}/${biomeId}`);
+                if (!response.ok) throw new Error('Erreur lors du chargement des données des enclos');
+                const data = await response.json();
+                console.log("Enclos trouvés :", data);
+    
+                if (data.length === 0) {
+                    container.innerHTML = '<p class="text-yellow-500 text-xl">Aucun enclos trouvé pour ce biome.</p>';
+                } else {
+                    container.innerHTML = ''; 
+                    data.forEach(enclosure => {
+                        container.innerHTML += createCard(enclosure.name, enclosure.statut, enclosure.id);
+                    });
+    
+                    // Ajouter des gestionnaires d'événements de clic pour chaque carte
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => {
+                        const enclosureId = card.getAttribute('data-enclosure-id');
+                        card.addEventListener('click', () => {
+                            redirectToAnimals(enclosureId);
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur :', error);
+                container.innerHTML = '<p class="text-red-500 text-xl">Impossible de charger les données. Veuillez réessayer.</p>';
+            }
+        }
+    
+        window.addEventListener('DOMContentLoaded', fetchData);
+    </script> -->
+
+    <script>
+        const apiUrl = "http://127.0.0.1:8000/enclos/enclos/by_biome";
+        const container = document.getElementById('card-container');
+        let enclosuresData = []; // Pour stocker temporairement les données récupérées
+        let enclosuresDataCopy = []
+        const colors = ['border-green-500'];
+        document.getElementById("buttonSearchId").addEventListener("click", searchEnclos)
+
+        // Détermine si l'utilisateur est un administrateur
+        const isAdmin = localStorage.getItem('email')?.includes('admin') || false;
+
+        // Fonction pour créer une carte d'enclos
+
+        async function searchEnclos() {
+            const animaux = await fetch("http://127.0.0.1:8000/animal/animals", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const value = document.getElementById("searchId").value;
+
+            animauxJson = await animaux.json();
+            if (value.length > 0) {
+                enclosuresData = enclosuresData.filter((enclos) =>
+                    animauxJson.some((animal) => enclos.id === animal.enclos_id && animal.name.toLowerCase() == value.toLowerCase())
+                );
+                if (!enclosuresData.length) {
+                    enclosuresData=[...enclosuresDataCopy]
+                    displayCards(enclosuresDataCopy)
+                }else{
+                    displayCards(enclosuresData);
+                }
+            } else {
+                displayCards(enclosuresDataCopy)
+            }
+
+           
+        }
+
+        function createCard(name, statut, id) {
+            const statutText = statut ? "Ouvert" : "Fermé";
+            const statutColor = statut ? "text-green-500" : "text-red-500";
+
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            return `
+                <div 
+                    class="card w-60 h-30  border ${randomColor} rounded-lg shadow-md bg-white p-4 cursor-pointer"
+                    data-enclosure-id="${id}"
+                >
+                    <div class="flex items-center gap-2 mb-3">
+                        ${isAdmin ?
+                    '<i class="fas fa-edit text-gray-700 text-xl cursor-pointer" data-enclosure-id="' + id + '"></i>'
+                    : ''}
+                        <h2 class="text-lg font-semibold text-gray-800">${name}</h2>
+                    </div>
+                    <p class="text-sm font-medium ${statutColor}">${statutText}</p>
+                </div>
+            `;
+        }
+
+        // Fonction pour rediriger vers la liste des animaux
+        function redirectToAnimals(enclosureId) {
+            window.location.href = `animals.html?enclosureId=${enclosureId}`;
+        }
+        enclosure = {}
+        // Fonction pour afficher le modal d'édition
+        function openEditModal(enclosureId) {
+            const editModal = document.getElementById('editModal');
+            const closeModalButton = document.getElementById('closeModal');
+            const editForm = document.getElementById('editForm');
+
+
+            //console.log("enclosure data first: ",enclosuresData)
+
+            enclosure = enclosuresData.find(e => e.id === parseInt(enclosureId));
+            // console.log("loading object: ",enclosure)
+            if (!enclosure) return;
+
+            // Mettre l'ID de l'enclos dans le champ caché
+            document.getElementById('enclosId').value = enclosure.id;
+            document.getElementById('name').value = enclosure.name || '';
+            document.getElementById('heuresD').value = enclosure.heuresD || '00:00';
+            document.getElementById('heuresF').value = enclosure.heuresF || '00:00';
+            document.getElementById('statut').checked = enclosure.statut || false;
+
+            // Afficher le modal
+            editModal.classList.remove('hidden');
+
+            closeModalButton.addEventListener('click', () => {
+                editModal.classList.add('hidden');
+            });
+        }
+        // Soumission du formulaire
+        const editForm = document.getElementById('editForm');
+        editForm.onsubmit = async (e) => {
+            e.preventDefault();
+        
+            // Récupération des données du formulaire
+            const formData = {
+                name: document.getElementById('name').value,
+                heuresD: document.getElementById('heuresD').value,
+                heuresF: document.getElementById('heuresF').value,
+                statut: document.getElementById('statut').checked,
+            };
+        
+            try {
+                // Envoi de la requête de mise à jour
+                const response = await fetch(`http://127.0.0.1:8000/enclos/updateEnclos/${enclosure.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+        
+                // Vérification de la réponse
+                if (!response.ok) {
+                    const errorData = await response.json();  // Récupération des détails d'erreur
+                    console.error('Error:', errorData);
+                    alert('Could not save changes. Please try again.');
+                    return; // Arrêter l'exécution en cas d'erreur
+                }
+        
+                // Mise à jour réussie
+                alert('Enclosure updated successfully');
+        
+                // Mise à jour des données en local
+                enclosure.name = formData.name;
+                enclosure.heuresD = formData.heuresD;
+                enclosure.heuresF = formData.heuresF;
+                enclosure.statut = formData.statut;
+        
+                // Masquer le modal
+                editModal.classList.add('hidden');
+        
+                // Mise à jour de l'affichage local sans recharger la page
+                updateEnclosureDisplay(enclosure);
+            } catch (error) {
+                console.error('Error updating enclosure:', error);
+                alert('Could not save changes');
+            }
+        };
+        
+        // Fonction pour mettre à jour l'affichage de l'enclos dans l'interface sans recharger la page
+        function updateEnclosureDisplay(enclosure) {
+            // Récupérez l'élément de l'enclos à mettre à jour
+            const enclosureElement = document.getElementById(`enclosure-${enclosure.id}`);
+            
+            if (enclosureElement) {
+                // Mettez à jour les informations de l'enclos
+                enclosureElement.querySelector('.name').textContent = enclosure.name;
+                enclosureElement.querySelector('.heuresD').textContent = enclosure.heuresD;
+                enclosureElement.querySelector('.heuresF').textContent = enclosure.heuresF;
+                enclosureElement.querySelector('.statut').textContent = enclosure.statut ? 'Active' : 'Inactive';
+        
+                // Vous pouvez aussi mettre à jour le statut visuellement (par exemple, changer la couleur)
+                if (enclosure.statut) {
+                    enclosureElement.classList.add('active');
+                    enclosureElement.classList.remove('inactive');
+                } else {
+                    enclosureElement.classList.add('inactive');
+                    enclosureElement.classList.remove('active');
+                }
+            }
+        }
+        
+
+        // Fonction pour récupérer les données depuis l'API
+        async function fetchData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const biomeId = urlParams.get('biomeId');
+
+            if (!biomeId) {
+                container.innerHTML = '<p class="text-red-500 text-xl">Aucun biome sélectionné.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/${biomeId}`);
+                if (!response.ok) throw new Error('Erreur lors du chargement des données des enclos');
+                const data = await response.json();
+                enclosuresData = data;
+                enclosuresDataCopy = [...data]
+                displayCards(data);
+            } catch (error) {
+                console.error('Erreur :', error);
+                container.innerHTML = '<p class="text-red-500 text-xl">Impossible de charger les données. Veuillez réessayer.</p>';
+            }
+        }
+
+        // Fonction pour afficher les cartes dans le DOM
+        function displayCards(data) {
+            container.innerHTML = '';
+            data.forEach(enclosure => {
+                container.innerHTML += createCard(enclosure.name, enclosure.statut, enclosure.id);
+            });
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const enclosureId = card.getAttribute('data-enclosure-id');
+
+                // Gestion du clic sur la carte
+                card.addEventListener('click', (e) => {
+                    if (isAdmin) {
+                        openEditModal(enclosureId);
+                    } else {
+                        redirectToAnimals(enclosureId);
+                    }
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchData();
+        });
+    </script>
+
+
+</body>
+
+</html>
