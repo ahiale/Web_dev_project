@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animals in Enclosure</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet"> 
+
+    <!-- Nouveau lien CDN pour Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+        }
+
+        /* Fixation de la boîte de commentaires dans la barre latérale */
+
+        /*  bg-whie: code css contracté  */
+        .sidebar {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .comment-box {
+            position: sticky;
+            bottom: 0;
+            background: #f9fafb;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+       
+    </style>
+</head>
+
+<body class="bg-gray-100  min-h-screen flex">
+    <!-- Barre latérale -->
+     
+    <div class="fixed left-0 top-0 h-screen w-64 bg-white shadow-md flex flex-col">
+        <!-- Titre Commentaires -->
+        <div class="p-4 flex items-center gap-4 border-b border-green-300 mt-10">
+            <i class="fas fa-comments text-green-500 text-2xl"></i>
+            <h2 class="text-xl font-semibold text-gray-800">Comments</h2>
+        </div>
+        
+    
+        <!-- Section pour les commentaires -->
+        <div id="comments-list" class="flex-1 overflow-y-auto p-4 bg-gren-300">
+            <!-- Les commentaires seront insérés ici dynamiquement -->
+        </div>
+    
+        <!-- Boîte de commentaire fixée en bas -->
+        <div class="w-full p-4 border-t border-gray-300">
+            <textarea id="comment-input" 
+                      class="w-full p-2 border-2 border-gray-400 rounded mb-2" 
+                      placeholder="Writte a comment..."></textarea>
+            <button id="submit-comment" 
+                    class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                send
+            </button>
+        </div>
+    </div>
+    
+
+    <!-- Contenu principal -->
+    <div class="flex-1 p-6 ml-60">
+       
+        <header class="w-full p-4 fixed top-0 left-0 z-50">
+            <!-- Bouton Retour -->
+            <a href="index.html" class="absolute top-4 left-4 flex items-center text-red-600 hover:text-red-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span class="ml-2 text-sm font-medium">Home</span>
+            </a>
+        </header>
+        
+        <div class="flex flex-col items-center mt-20 mb-8">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-dog text-red-500 text-4xl"></i>
+                <h1 class="text-4xl font-bold text-gray-800">List of Animals</h1>
+            </div>
+        </div>
+        
+       
+    <div class="flex-1 p-6 ml-0 ">
+    <div id="animals-container" class="p-6 flex flex-wrap justify-center gap-6 mx-auto w-full">
+        <!-- Liste des animaux de l'enclos -->
+    </div>
+</div>
+
+        
+    </div>
+
+    <script>
+        const animalsContainer = document.getElementById('animals-container');
+        const commentsList = document.getElementById('comments-list');
+        const commentInput = document.getElementById('comment-input');
+        const submitCommentBtn = document.getElementById('submit-comment');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const enclosureId = urlParams.get('enclosureId');
+
+
+        const userId = localStorage.getItem('userId');  
+        const prenom=localStorage.getItem('prenom');
+
+        if (!enclosureId) {
+            animalsContainer.innerHTML = '<p class="text-red-500 text-xl">Aucun enclos sélectionné.</p>';
+        } else {
+            // Fonction pour récupérer les animaux
+            async function fetchAnimals() {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/animal/animals/by_enclos/${enclosureId}`);
+                    if (!response.ok) throw new Error('Erreur lors du chargement des animaux');
+                    const animals = await response.json();
+                    console.log(animals)
+                    if (animals.length === 0) {
+                        animalsContainer.innerHTML = '<p class="text-red-500 text-xl"> We do not find any animals for this enclos</p>';
+                    } else {
+                        animals.forEach(animal => {
+                            const animalCard = `
+                                <div class="w-60 h-60 border border-green-500 rounded-2xl shadow-md bg-white p-4">
+                                    <img src="${animal.picture}" alt="${animal.name}" class="w-full h-40 object-cover rounded-t-2xl mb-3">
+                                    <h2 class="text-lg font-semibold text-gray-800">${animal.name}</h2>
+                                    <!-- <p class="text-sm text-gray-600">${animal.description}</p> -->
+                                </div>
+                            `;
+                            animalsContainer.innerHTML += animalCard;
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erreur :', error);
+                    animalsContainer.innerHTML = '<p class="text-red-500 text-xl justify-center"> We do not have any comment fort this enclos.</p>';
+                }
+            }
+
+            // Fonction pour récupérer les commentaires pour l'enclos
+            async function fetchComments() {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/enclos/comments/by_enclosure/${enclosureId}`);
+                    if (!response.ok) throw new Error('Erreur lors du chargement des commentaires');
+                    const comments = await response.json();
+
+                    commentsList.innerHTML = '';  
+
+                    if (comments.length === 0) {
+                        commentsList.innerHTML = '<p class="text-gray-500 text-sm">Aucun commentaire pour cet enclos.</p>';
+                    } else {
+                        comments.forEach(comment => {
+                            const commentItem = `
+                                <div class="p-2 mb-2 bg-green-100 border border-gray-300 rounded-lg">
+                                    <p class="text-sm text-gray-700">${comment.content}</p>
+                                    <!-- <small class="text-xs text-gray-500">Posté par ${prenom}</small> -->
+                                </div>
+                            `;
+                            commentsList.innerHTML += commentItem;
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erreur :', error);
+                    commentsList.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-red-500 text-sm text-center">We do not have any comment for this enclos.</p></div>';
+
+                }
+            }
+
+            // Fonction pour envoyer un nouveau commentaire
+            async function submitComment() {
+                const content = commentInput.value.trim();
+                if (!content) return;
+
+                const newComment = {
+                    content: content,
+                    id: Date.now(),  
+                    user_id: userId,
+                    enclos_id: enclosureId
+                };
+
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/comment/Comments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(newComment),
+                    });
+
+                    if (!response.ok) throw new Error('Erreur lors de l\'envoi du commentaire');
+                    commentInput.value = '';  
+                    fetchComments();  
+                } catch (error) {
+                    console.error('Erreur :', error);
+                }
+            }
+
+      
+            submitCommentBtn.addEventListener('click', submitComment);
+
+           
+            fetchAnimals();
+            fetchComments();
+        }
+    </script>
+</body>
+
+
+</html>
