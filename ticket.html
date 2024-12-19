@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert CDN -->
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4" style="background: linear-gradient(rgba(2, 2, 2, 0.4), rgba(0, 0, 0, 0.4)), url('images/back1.jpeg') no-repeat center center; background-size: cover; backdrop-filter: brightness(0.9);">
+    <!-- Main Payment Form -->
+    <div class="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full animate-fade-in">
+        <a href="index.html" class="absolute top-4 left-4 flex items-center text-red-600 hover:text-red-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="ml-2 text-sm font-medium">Home</span>
+        </a>
+        <div class="flex items-center justify-center">
+            <img src="images/logo-oasis.png" alt="Logo" class="w-24 h-24 object-contain">
+        </div>
+        <h2 class="text-2xl font-bold text-center text-green-800 mb-8"> Payement Form </h2>
+
+        <form id="paymentForm" class="space-y-6">
+            <!-- Quantity Input -->
+            <div>
+                <input type="number" id="quantity" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300" placeholder="Enter the quantity of ticket" required min="1">
+                <p class="text-red-500 text-sm mt-2 hidden" id="quantityError">Quantity is required.</p>
+            </div>
+
+            <!-- Payment Date Input -->
+            <div>
+                <input type="date" id="paymentDate" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300"  placeholder="Enter the date to your visite" required min="">
+                <p class="text-red-500 text-sm mt-2 hidden" id="paymentDateError">Payment date is required.</p>
+            </div>
+
+            <button type="submit" class="w-full bg-green-800 text-white py-3 rounded-lg font-semibold hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2 transition-all duration-300">
+                Validate Payment
+            </button>
+        </form>
+    </div>
+
+    <!-- Modal for Confirming Amount -->
+    <div id="amountConfirmationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg max-w-md w-full">
+            <h2 class="text-xl font-bold text-green-800 mb-6">Confirmation</h2>
+            <p class="text-lg mb-4" id="amountText"></p>
+            <div class="flex justify-center gap-4"> <!-- Réduit l'espace entre les boutons -->
+                <button id="confirmAmount" class="bg-green-800 text-white py-2 px-4 rounded-lg">Confirm</button>
+                <button id="cancelAmount" class="bg-red-500 text-white py-2 px-4 rounded-lg">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Modal for Card Information -->
+    <div id="cardModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg max-w-md w-full">
+            <div class="flex items-center justify-center">
+                <img src="images/logo-oasis.png" alt="Logo" class="w-24 h-24 object-contain">
+            </div>
+            <h2 class="text-2xl font-bold text-green-800 mb-6">Enter Card Information</h2>
+
+            <form id="cardForm" class="space-y-6">
+                <!-- Card Number -->
+                <div>
+                    <input type="text" id="cardNumber" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300" placeholder="Card Number" required>
+                    <p class="text-red-500 text-sm mt-2 hidden" id="cardNumberError">Please enter a valid card number.</p>
+                </div>
+
+                <!-- Expiry Date -->
+                <div>
+                    <input type="month" id="expiryDate" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300" required>
+                    <p class="text-red-500 text-sm mt-2 hidden" id="expiryDateError">Please enter a valid expiry date.</p>
+                </div>
+
+                <!-- CVV -->
+                <div>
+                    <input type="text" id="cvv" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300" placeholder="CVV" required maxlength="3">
+                    <p class="text-red-500 text-sm mt-2 hidden" id="cvvError">Please enter the CVV.</p>
+                </div>
+
+                <button type="submit" class="w-full bg-green-800 text-white py-3 rounded-lg font-semibold hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2 transition-all duration-300">
+                    Submit Payment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Clear previous error messages
+            document.querySelectorAll('.text-red-500').forEach(function (element) {
+                element.classList.add('hidden');
+            });
+
+            let isValid = true;
+
+            // Validate Quantity
+            const quantity = document.getElementById('quantity').value.trim();
+            if (!quantity || quantity < 1) {
+                document.getElementById('quantityError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            document.getElementById('paymentDate').setAttribute('min', new Date().toISOString().split('T')[0]);
+
+            // Validate Payment Date
+            const paymentDate = document.getElementById('paymentDate').value.trim();
+            if (!paymentDate) {
+                document.getElementById('paymentDateError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Show Amount Confirmation Modal
+                const totalAmount = quantity * 10; // 10 euros per ticket
+                document.getElementById('amountText').textContent = `You are about to pay €${totalAmount}. Are you sure?`;
+                document.getElementById('amountConfirmationModal').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('confirmAmount').addEventListener('click', function () {
+            // Hide the amount confirmation modal
+            document.getElementById('amountConfirmationModal').classList.add('hidden');
+
+            // Show Card Information Modal
+            document.getElementById('cardModal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancelAmount').addEventListener('click', function () {
+            // Redirect to the home page
+            window.location.href = '/ticket.html';
+        });
+
+        document.getElementById('cardForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Clear previous error messages
+            document.querySelectorAll('.text-red-500').forEach(function (element) {
+                element.classList.add('hidden');
+            });
+
+            let isValid = true;
+
+            // Validate Card Number
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            if (!cardNumber || cardNumber.length < 16) {
+                document.getElementById('cardNumberError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Validate Expiry Date
+            const expiryDate = document.getElementById('expiryDate').value.trim();
+            if (!expiryDate) {
+                document.getElementById('expiryDateError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Validate CVV
+            const cvv = document.getElementById('cvv').value.trim();
+            if (!cvv || cvv.length !== 3) {
+                document.getElementById('cvvError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                
+                document.getElementById('cardModal').classList.add('hidden');
+                
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your payment was successful. We look forward to meeting you :)',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(function () {
+                    
+                    window.location.href = '/';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+
+    <!-- Add Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</head>
+
+<!-- <body class="bg-gradient-to-r from-green-200 to-green-400 flex items-center justify-center min-h-screen p-4"> -->
+    <body class="flex items-center justify-center min-h-screen p-4" style="background: linear-gradient(rgba(2, 2, 2, 0.4), rgba(0, 0, 0, 0.4)), url('images/back1.jpeg') no-repeat center center; background-size: cover; backdrop-filter: brightness(0.9);">
+
+    <div class="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full animate-fade-in relative">
+        <!-- Back Arrow -->
+        <a href="index.html"
+            class="absolute top-4 left-4 flex items-center text-red-600 hover:text-red-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="ml-2 text-sm font-medium">Home</span>
+        </a>
+
+        <div class="flex items-center justify-center">
+            <img src="images/logo-oasis.png" alt="Logo" class="w-24 h-24 object-contain">
+        </div>
+        <h2 class="text-xl font-bold text-center text-green-800 mb-6">Sign In</h2>
+        <form id="loginForm" class="space-y-4" novalidate>
+            <!-- Email Field -->
+            <div>
+                <input type="email" id="email"
+                    class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300"
+                    placeholder="Enter your email" required>
+                <p class="text-red-500 text-sm mt-1 hidden" id="emailError">Please enter a valid email.</p>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+                <input type="password" id="password"
+                    class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800 transition-all duration-300"
+                    placeholder="Enter your password" required>
+                <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">Password is required.</p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-green-800 text-white py-2 rounded-lg font-semibold hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2 transition-all duration-300 transform hover:scale-[1.02]">
+                Submit
+            </button>
+        </form>
+        <p class="text-center text-gray-600 mt-6">
+            Don't have an account?
+            <a href="register.html"
+                class="text-green-800 font-semibold hover:text-green-900 transition-colors duration-300">Sign up</a>
+        </p>
+    </div>
+
+    <!-- Swiper container -->
+    <div class="swiper-container fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50"
+        id="swiperWrapper">
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <!-- Success Slide -->
+                <div class="swiper-slide bg-green-500 text-white p-6 rounded-lg shadow-lg">
+                    Login successful! Redirecting...
+                </div>
+                <!-- Error Slide -->
+                <div class="swiper-slide bg-red-500 text-white p-6 rounded-lg shadow-lg">
+                    Invalid login credentials. Please try again.
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+    <!-- <script>
+
+
+        // Fonction pour récupérer les détails de l'utilisateur via l'ID
+        async function fetchUserDetails(userId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/user/get/${userId}`);
+                if (response.ok) {
+                    const userData = await response.json();
+                    localStorage.setItem('prenom', userData.firstname); // Stocker le prénom dans localStorage
+                    console.log(`Prénom de l'utilisateur : ${userData.firstname}`);
+                } else {
+                    console.error("Impossible de récupérer les détails de l'utilisateur.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'appel à l'API :", error);
+            }
+        }
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            // Clear previous error messages
+            document.querySelectorAll('.text-red-500').forEach(function (element) {
+                element.classList.add('hidden');
+            });
+
+            let isValid = true;
+
+            // Validate email
+            const email = document.getElementById('email').value.trim();
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email || !emailPattern.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (!password) {
+                document.getElementById('passwordError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/user/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+
+                        // Store token and user ID in localStorage
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('userId', data.id);
+
+                        // Récupérer et stocker les détails de l'utilisateur
+                        await fetchUserDetails(data.id);
+
+                        // Show success SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful!',
+                            text: 'You have logged in successfully.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = 'index.html'; // Redirect to homepage
+                        });
+
+                    } else {
+                        const errorData = await response.json();
+
+                        // Show error SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorData.detail || 'Invalid login credentials. Please try again.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error logging in:', error);
+
+                    // Show connection error SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Connection Error',
+                        text: 'Unable to connect to the server. Please try again later.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+
+    </script> -->
+    <script>
+        // Fonction pour récupérer les détails de l'utilisateur via l'ID
+        async function fetchUserDetails(userId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/user/get/${userId}`);
+                if (response.ok) {
+                    const userData = await response.json();
+                    localStorage.setItem('prenom', userData.firstname); // Stocker le prénom dans localStorage
+                    console.log(`Prénom de l'utilisateur : ${userData.firstname}`);
+                } else {
+                    console.error("Impossible de récupérer les détails de l'utilisateur.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'appel à l'API :", error);
+            }
+        }
+    
+        const loginForm = document.getElementById('loginForm');
+    
+        loginForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+    
+            // Clear previous error messages
+            document.querySelectorAll('.text-red-500').forEach(function (element) {
+                element.classList.add('hidden');
+            });
+    
+            let isValid = true;
+    
+            // Validate email
+            const email = document.getElementById('email').value.trim();
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email || !emailPattern.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            }
+    
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (!password) {
+                document.getElementById('passwordError').classList.remove('hidden');
+                isValid = false;
+            }
+    
+            if (isValid) {
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/user/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                    });
+    
+                    if (response.ok) {
+                        const data = await response.json();
+    
+                        // Store token and user ID in localStorage
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('userId', data.id);
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('password', password);
+    
+                        // Vérifier si l'utilisateur est admin
+                        if (email === 'admin@gmail.com' && password === 'admin') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Welwome, Admin!',
+                                text: 'Redirecting to your page.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                fetchUserDetails(data.id);
+                                setTimeout(()=>{
+                                    window.location.href = 'index.html'; 
+
+                                },4500)
+                            });
+                        } else {
+                            // Récupérer et stocker les détails de l'utilisateur
+                            await fetchUserDetails(data.id);
+                            // Show success SweetAlert
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Login Successful!',
+                                text: 'You have logged in successfully.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = 'index.html';
+                            });
+                        }
+                    } else {
+                        const errorData = await response.json();
+    
+                        // Show error SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorData.detail || 'Invalid login credentials. Please try again.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error logging in:', error);
+    
+                    // Show connection error SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Connection Error',
+                        text: 'Unable to connect to the server. Please try again later.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    </script>
+    
+</body>
+
+</html>

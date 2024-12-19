@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Park Navigation with Route Modal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  <header class="p-4 bg-green-600 text-white text-center shadow-md">
+    <h1 class="text-3xl font-bold">Leisure Park - Navigation & Routes</h1>
+  </header>
+
+  <!-- Services Section -->
+  <div class="flex flex-col items-center my-6">
+    <!-- Titre avec icône -->
+    <div class="flex items-center gap-2 mt-5 mb-5">
+        <i class="fa-solid fa-earth-americas"></i>
+        <h1 class="text-4xl font-bold text-gray-800 mb-8">Itineraire and navigation in parc</h1>
+    </div>
+
+    <!-- Dynamic List of Services -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl px-6">
+
+      <!-- Service Cards -->
+      <div onclick="openModal('Restroom')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-restroom fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Restroom</h3>
+      </div>
+
+      <div onclick="openModal('Water Point')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-tint fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Water Point</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-toilet fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Toilet</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-home fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">lodge</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-utensils fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Restaurant</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-cookie fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Snack bar</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-store fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Shop</h3>
+      </div>
+
+      <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-train fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold"> Train station</h3>
+      </div>
+
+      <div onclick="openModal('Cafe')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-coffee fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Cafe</h3>
+      </div>
+
+      
+
+      <div onclick="openModal('Picnic Area')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-campground fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Picnic Area</h3>
+      </div>
+
+      <div onclick="openModal('Parking')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-parking fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Parking</h3>
+      </div>
+
+      <div onclick="openModal('Playground')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-child fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Playground</h3>
+      </div>
+
+      <div onclick="openModal('Scenic Viewpoint')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-mountain fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Scenic Viewpoint</h3>
+      </div>
+
+      <div onclick="openModal('Restaurant')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-bars fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Biome 1</h3>
+      </div>
+      <div onclick="openModal('Restaurant')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-bars fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Biome 2</h3>
+      </div>
+      <div onclick="openModal('Restaurant')" class="service border-2 border-green-400 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
+        <i class="fas fa-bars fa-lg mr-2"></i>
+        <h3 class="text-sm font-semibold">Biome 3 </h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-4 rounded-lg shadow-lg w-1/4">
+      <h2 class="text-lg font-bold mb-2 text-green-600 text-center" id="modal-title">Route</h2>
+      <p class="text-sm text-center mb-2" id="modal-content"></p>
+      <button class="mt-2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700 w-full" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+<script>
+function openModal(service) {
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modal-content');
+
+  const routes = {
+    "Restroom": "From the main entrance, follow the signs to the central area.",
+    "Water Point": "Follow the main path to the fountain marked with green signs.",
+    "Snack Bar": "Head towards the cafeteria near the large lake.",
+    "Cafe": "Take the main trail to the beverage kiosk.",
+    "Restaurant": "Cross the central area to reach the main cafeteria.",
+    "Hut": "Walk towards the central beach with wooden parasols.",
+    "Shop": "Follow the signs to the souvenir center.",
+    "Picnic Area": "Follow the path to the shaded tables at the back of the park.",
+    "Parking": "Park in the main entrance parking area.",
+    "Playground": "Walk towards the playground with colorful swings.",
+    "Scenic Viewpoint": "Follow the elevated trail to the viewpoint."
+  };
+
+  modalContent.innerText = routes[service];
+  modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  modal.classList.add('hidden');
+}
+</script>
+
+</body>
+
+</html>

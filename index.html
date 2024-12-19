@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Responsive zoo website</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=YourFontName&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <!-- header -->
+
+    <header class="header text-white p-1 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" class="logo text-xl font-semibold flex items-center">
+            <img src="images/logo-oasis.png" alt="" class="h-20 w-auto object-contain">
+        </a>
+
+        <!-- Navigation -->
+        <nav class="navbar flex space-x-6 items-center">
+            <a href="#home">home</a>
+            <a href="#biomes">biomes</a>
+            <a href="ticket.html">pricing</a>
+            <a href="navigation.html">Navigation</a>
+            <a href="register.html" id="registerLink">sign up</a>
+            <a href="login.html" id="loginLink">login</a>
+
+            <div id="userSection" class="hidden flex items-center space-x-4">
+                <span id="userName"></span>
+                <button id="logoutBtn">logout</button>
+            </div>
+        </nav>
+    </header>
+
+
+
+
+
+    <!-- end -->
+
+    <!-- home -->
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <h3>WELCOME AT OASIS </h3>
+
+            <div class="flex justify-center">
+                <a href="login.html" class="btn">Join us</a>
+            </div>
+        </div>
+
+        <img src="images/bottom_wave.png" alt="" class="wave">
+
+    </section>
+
+    <!-- end -->
+
+    <!-- about -->
+
+    <section class="about" id="about">
+
+
+        <div class="box-container">
+            <div class="image">
+                <!-- SVG frame pour l'image -->
+                <div class="svg-border">
+                    <img src="images/sign-up.jpg" alt="Oasis Zoo Overview">
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="">
+                    <h3 class="title">Discover Oasis Zoo</h3>
+                </div>
+                <p>
+                    Oasis's Zoo, the perfect destination for animal lovers!
+                    Our zoo is home to a wide variety of species, from majestic big cats to vibrant birds
+                    and fascinating reptiles. With over 200 animal species and spacious enclosures,
+                    Oasis Zoo is committed to wildlife preservation and education.
+                </p>
+                <p>
+                    Visit us to explore lush landscapes, interact with some of the friendliest animals,
+                    and immerse yourself in nature. Oasis Zoo is not just a zoo – it's an adventure for
+                    families, children, and all ages.
+                </p>
+                <h3 class="title">Discover our services</h3>
+                <div class="icons-container grid grid-cols-2 2xl:grid-cols-3 gap-6">
+
+                    <div class="icons">
+                        <i class="fas fa-utensils"></i>
+                        <h3>Restaurant</h3>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <h3>Beach Hut</h3>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-tree"></i>
+                        <h3>Picnic Area</h3>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-coffee"></i>
+                        <h3>Café</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="navigation" id="navigation">
+       
+        <h2 class="heading ">Navigation</h2>
+    
+        <div class="grid-container mt-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full max-w-7xl mx-auto px-4">
+    
+                
+                <div onclick="openModal('Restroom')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-restroom fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Restroom</h3>
+                </div>
+    
+                <div onclick="openModal('Water Point')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-tint fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Water Point</h3>
+                </div>
+    
+                <div onclick="openModal('Snack Bar')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-coffee fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Snack Bar</h3>
+                </div>
+    
+                <div onclick="openModal('Cafe')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-coffee fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Cafe</h3>
+                </div>
+    
+                <div onclick="openModal('Restaurant')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-utensils fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Restaurant</h3>
+                </div>
+    
+                <div onclick="openModal('Hut')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-home fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Hut</h3>
+                </div>
+    
+                <div onclick="openModal('Shop')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-shopping-bag fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Shop</h3>
+                </div>
+    
+                <div onclick="openModal('Picnic Area')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-tree fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Picnic Area</h3>
+                </div>
+    
+                <div onclick="openModal('Parking')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-parking fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Parking</h3>
+                </div>
+    
+                <div onclick="openModal('Playground')" class="service border-2 border-green-400 p-2 h-20 rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center transition-transform transform hover:scale-105">
+                    <i class="fas fa-child fa-lg mr-2 text-green-500"></i>
+                    <h3 class="text-xl font-semibold">Playground</h3>
+                </div>
+            </div>
+        </div>
+    
+       
+        <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-80 h-auto">
+                <h2 class="text-2xl font-bold mb-4 text-green-600 text-center" id="modal-title">Modal Title</h2>
+                <p class="text-lg text-center mb-4" id="modal-content">This is the modal content.</p>
+                <button class="mt-2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700 w-full text-lg" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </section> -->
+    
+
+    <!-- end -->
+
+    <!-- gallery -->
+
+    <!-- <section class="gallery" id="gallery">
+
+        <h2 class="heading">gallery</h2>
+
+        <div class="swiper gallery-slider">
+
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="images/gallery-1.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="images/gallery-2.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="images/gallery-3.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="images/gallery-4.jpg" alt="">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+        </div>
+
+    </section> -->
+
+    <!-- end -->
+
+    <!-- animals -->
+
+    <section class="animal" id="animal">
+
+        <h2 class="heading">animals</h2>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="images/animal_1.jpg" alt="">
+                <div class="content">
+                    <h3>cameleon</h3>
+
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="images/animals_2.jpg" alt="">
+                <div class="content">
+                    <h3>zebra</h3>
+
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="images/animals_3.jpg" alt="">
+                <div class="content">
+                    <h3>giraffe</h3>
+
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="images/animals_4.jpg" alt="">
+                <div class="content">
+                    <h3>monkey</h3>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- banner -->
+
+    <section class="banner">
+
+        <div class="row">
+
+            <div class="content">
+
+                <ul class="text-2xl">
+                    <li class="mb-3"><strong>Opening Hours:</strong> Open daily from 9:00 AM to 10:00 PM.</li>
+                    <li class="mb-3"><strong>Location:</strong> Green Valley, City Name.</li>
+                    <li class="mb-3"><strong>Family-Friendly:</strong> Dedicated picnic areas, playgrounds, and
+                        interactive exhibits for children.</li>
+                    <li class="mb-3"><strong>Educational Tours:</strong> Guided tours and live demonstrations to learn
+                        more about wildlife conservation.</li>
+                    <li class="mb-3"><strong>Dining:</strong> On-site restaurants and cafés to enjoy delicious meals.
+                    </li>
+                    <li class="mb-3"><strong>Souvenirs:</strong> Visit our gift shop for unique keepsakes and
+                        eco-friendly products.</li>
+                </ul>
+                <p>Plan your visit today and create unforgettable memories at Oasis Zoo!</p>
+            </div>
+
+            <div class="image">
+                <img src="images/banner_1.png" alt="Banner Image">
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- end -->
+
+    <!-- pricing -->
+
+    <section class="pricing" id="pricing">
+
+        <h2 class="heading">tickets price's </h2>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="images/pricing1.png" alt="">
+                <h3>individuals</h3>
+                <h4 class="price">$ 10/person</h4>
+                <p>the entrance is from 8:00 to 14:00</p>
+            </div>
+
+            <div class="box">
+                <img src="images/pricing2.png" alt="">
+                <h3>school</h3>
+                <h4 class="price">$ 10/ person</h4>
+                <p>the entrance is from 8:00 to 14:00</p>
+            </div>
+
+            <div class="box">
+                <img src="images/pricing1.png" alt="">
+                <h3>family</h3>
+                <h4 class="price">$ 10/person</h4>
+                <p>the entrance is from 8:00 to 14:00</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="biomes" id="biomes">
+        <h2 class="heading">Biomes</h2>
+        <div class="biomes-container cursor-pointer"></div>
+    </section>
+
+    
+    
+    <!-- end -->
+
+    <!-- contact -->
+
+    <!-- <section class="contact" id="contact">
+
+        <h2 class="heading">contact</h2>
+
+        <form action="">
+
+            <div class="inputBox">
+                <input type="text" placeholder="name">
+                <input type="email" placeholder="email">
+            </div>
+
+            <div class="inputBox">
+                <input type="number" placeholder="number">
+                <input type="text" placeholder="subject">
+            </div>
+
+            <textarea name="" id="" cols="30" rows="10" placeholder="meassage"></textarea>
+
+            <a href="#" class="btn">send message</a>
+
+        </form>
+
+    </section> -->
+
+    <!-- end -->
+
+    <footer class="bg-green-800  text-white py-8 mb-0">
+        <div class="container mx-auto text-center">
+            <p class="text-2xl text-lg">
+                &copy; 2024 <span class="font-bold">OASIS ZOO</span>. Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
